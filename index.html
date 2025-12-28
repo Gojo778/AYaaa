@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For AYA</title>
+  <style>
+    :root{
+      --bg:#ffd7e5;
+      --bg2:#ffe9f1;
+      --card:#ffffffcc;
+      --ink:#3b1b2b;
+      --muted:#6a3a52;
+      --accent:#c84b78;
+      --shadow: 0 18px 45px rgba(0,0,0,.15);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 700px at 15% 25%, #ff6fa340, transparent 55%),
+        radial-gradient(700px 600px at 85% 30%, #ffb6cf55, transparent 60%),
+        linear-gradient(135deg, var(--bg), var(--bg2));
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+    .app{ width:min(860px, 100%); display:grid; gap:14px; }
+    .card{
+      background: var(--card);
+      border: 1px solid #ffffff;
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hidden{display:none !important;}
+
+    .paper{
+      background:
+        radial-gradient(1px 1px at 20% 25%, #00000010 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 65%, #00000010 50%, transparent 51%),
+        radial-gradient(1px 1px at 40% 80%, #00000010 50%, transparent 51%),
+        linear-gradient(180deg, #ffffffd8, #ffffffc8);
+    }
+
+    /* Opening page */
+    .opening{
+      display:grid;
+      gap:12px;
+      justify-items:center;
+      text-align:center;
+      padding:22px 16px;
+    }
+    .kitty{
+      width:170px;height:170px;
+      position:relative;
+      filter: drop-shadow(0 18px 22px rgba(0,0,0,.12));
+    }
+    .kitty .head{
+      position:absolute; inset:30px 22px 18px 22px;
+      background:#fff;
+      border-radius: 40px;
+      border: 3px solid #2a1a22;
+    }
+    .kitty .ear{
+      position:absolute; top:20px;
+      width:52px;height:52px;
+      background:#fff;
+      border:3px solid #2a1a22;
+      border-bottom:none;
+      border-radius: 16px 16px 0 0;
+      transform: rotate(10deg);
+    }
+    .kitty .ear.left{left:26px; transform: rotate(-14deg);}
+    .kitty .ear.right{right:26px;}
+    .kitty .eye{
+      position:absolute; top:92px;
+      width:18px;height:18px; border-radius:50%;
+      background:#2a1a22;
+    }
+    .kitty .eye.left{left:62px}
+    .kitty .eye.right{right:62px}
+    .kitty .mouth{
+      position:absolute; top:112px; left:50%;
+      width:28px;height:18px;
+      transform:translateX(-50%);
+      border-bottom:3px solid #2a1a22;
+      border-radius:0 0 18px 18px;
+    }
+    .kitty .blush{
+      position:absolute; top:112px;
+      width:34px;height:18px;
+      background:#ff8fb3;
+      opacity:.55;
+      border-radius:999px;
+    }
+    .kitty .blush.left{left:38px}
+    .kitty .blush.right{right:38px}
+    .kitty .hearts{
+      position:absolute; inset:0;
+      display:grid; place-items:center;
+      font-size:22px;
+      opacity:.9;
+    }
+
+    .bigTitle{
+      margin:0;
+      font-weight:1000;
+      letter-spacing:.02em;
+      color:var(--accent);
+      font-size: clamp(34px, 5vw, 56px);
+      text-transform: uppercase;
+    }
+    .smallText{
+      margin:0;
+      color:var(--muted);
+      font-weight:800;
+      font-size:13px;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+    }
+
+    .choiceRow{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      margin-top:8px;
+    }
+    .circleBtn{
+      width:62px;height:62px;
+      border-radius:999px;
+      border:0;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      font-size:26px;
+      font-weight:1000;
+      box-shadow: 0 14px 26px rgba(0,0,0,.12);
+      background: #c84b78;
+      color:#fff;
+    }
+    .circleBtn:active{transform:translateY(1px)}
+    .hint{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+    }
+
+    /* Common UI */
+    .topbar{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .tag{
+      font-size:13px;
+      color:var(--muted);
+      background:#ffffffb8;
+      border:1px solid #ffffff;
+      padding:8px 10px;
+      border-radius:999px;
+      text-align:center;
+      font-weight:900;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      border:0;
+      cursor:pointer;
+      font-weight:900;
+      background: linear-gradient(135deg, #ff6fa3, #ffb6cf);
+      color:#3b1124;
+      box-shadow: 0 14px 26px rgba(255,111,163,.25);
+    }
+    .btn.secondary{
+      background:#ffffffcc;
+      border:1px solid #ffffff;
+      box-shadow:none;
+      color:var(--ink);
+    }
+
+    /* Maze */
+    canvas{
+      width:100%;
+      max-width:520px;
+      border-radius:18px;
+      border: 2px solid #ffffff;
+      background: #ffffff;
+      display:block;
+      margin: 0 auto;
+      box-shadow: var(--shadow);
+      touch-action: none;
+    }
+    .ctrlRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:10px;
+    }
+
+    /* Modal */
+    .modal{
+      position:fixed; inset:0;
+      display:none; place-items:center;
+      padding:18px;
+      background: rgba(0,0,0,.35);
+      z-index:9999;
+    }
+    .modal.show{display:grid}
+    .modalCard{
+      width:min(820px, 100%);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fff, #fff7fb);
+      border: 1px solid #ffffff;
+      box-shadow: 0 22px 60px rgba(0,0,0,.18);
+      padding:18px;
+    }
+    .modalHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .modalHeader .close{
+      border:1px solid #ffffff;
+      background:#ffffff;
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:1000;
+      cursor:pointer;
+    }
+    .msg{
+      margin:0;
+      font-size: clamp(18px, 2.3vw, 24px);
+      line-height:1.55;
+      color:var(--ink);
+      font-weight:1000;
+    }
+    .msg2{
+      margin:10px 0 0;
+      font-size:15.5px;
+      line-height:1.7;
+      color:var(--muted);
+      font-weight:800;
+      white-space:pre-wrap;
+    }
+    .modalActions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+      justify-content:flex-end;
+    }
+
+    .letter{
+      margin-top:12px;
+      padding:14px;
+      border-radius:18px;
+      border:1px solid #ffe2ed;
+      background:#fff;
+      box-shadow: 0 10px 20px rgba(0,0,0,.06);
+      white-space:pre-wrap;
+      line-height:1.75;
+      color:#5a2d43;
+      font-weight:800;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- OPENING -->
+    <section class="card paper" id="screenIntro">
+      <div class="opening">
+        <div class="kitty" aria-hidden="true">
+          <div class="hearts">💗 &nbsp; 🌸 &nbsp; 💗</div>
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="head"></div>
+          <div class="eye left"></div>
+          <div class="eye right"></div>
+          <div class="blush left"></div>
+          <div class="blush right"></div>
+          <div class="mouth"></div>
+        </div>
+
+        <h1 class="bigTitle">HEY BABY!</h1>
+        <p class="smallText">I made a little maze for you.</p>
+
+        <div class="choiceRow">
+          <button class="circleBtn" id="btnNo" type="button">✖</button>
+          <button class="circleBtn" id="btnYes" type="button">✓</button>
+        </div>
+
+        <div class="hint" id="noHint"></div>
+      </div>
+    </section>
+
+    <!-- ONLY GAME: MAZE -->
+    <section class="card hidden" id="screenMaze">
+      <div class="topbar">
+        <div style="display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+          <div class="tag">Maze for AYA</div>
+          <div class="tag">Reach the pink square</div>
+        </div>
+        <div class="ctrlRow" style="margin-top:0;">
+          <button class="btn secondary" id="btnHome">Home</button>
+          <button class="btn secondary" id="btnMazeRestart">Restart</button>
+        </div>
+      </div>
+
+      <canvas id="mazeCanvas" width="520" height="520"></canvas>
+
+      <div class="ctrlRow">
+        <button class="btn" id="up" type="button">⬆</button>
+      </div>
+      <div class="ctrlRow">
+        <button class="btn" id="left" type="button">⬅</button>
+        <button class="btn" id="down" type="button">⬇</button>
+        <button class="btn" id="right" type="button">➡</button>
+      </div>
+
+      <div class="tag" style="margin-top:10px;">You can also use arrow keys.</div>
+    </section>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modalCard">
+      <div class="modalHeader">
+        <div class="tag" id="modalTitle">Message</div>
+        <button class="close" id="modalClose">Close</button>
+      </div>
+      <p class="msg" id="modalMsg1"></p>
+      <p class="msg2" id="modalMsg2"></p>
+
+      <div class="letter" id="letterBox" style="display:none;"></div>
+
+      <div class="modalActions">
+        <button class="btn secondary" id="modalHome">Home</button>
+        <button class="btn" id="modalNext">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // BASIC NAV
+    // =========================
+    const HER_NAME = "AYA";
+
+    const screens = {
+      intro: document.getElementById("screenIntro"),
+      maze:  document.getElementById("screenMaze"),
+    };
+
+    function show(name){
+      Object.values(screens).forEach(s => s.classList.add("hidden"));
+      screens[name].classList.remove("hidden");
+    }
+
+    document.getElementById("btnYes").addEventListener("click", () => {
+      show("maze");
+      mazeInit();
+      document.getElementById("noHint").textContent = "";
+    });
+
+    document.getElementById("btnNo").addEventListener("click", () => {
+      document.getElementById("noHint").textContent = "No is not allowed. Tap ✓";
+    });
+
+    document.getElementById("btnHome").addEventListener("click", () => show("intro"));
+
+    // =========================
+    // MODAL
+    // =========================
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalMsg1 = document.getElementById("modalMsg1");
+    const modalMsg2 = document.getElementById("modalMsg2");
+    const modalClose = document.getElementById("modalClose");
+    const modalHome = document.getElementById("modalHome");
+    const modalNext = document.getElementById("modalNext");
+    const letterBox = document.getElementById("letterBox");
+    let modalNextAction = null;
+
+    function openModal(title, m1, m2, nextLabel="Next", nextAction=null, letterText=null){
+      modalTitle.textContent = title;
+      modalMsg1.textContent = m1;
+      modalMsg2.textContent = m2;
+
+      if(letterText){
+        letterBox.style.display = "block";
+        letterBox.textContent = letterText;
+      } else {
+        letterBox.style.display = "none";
+        letterBox.textContent = "";
+      }
+
+      modalNext.textContent = nextLabel;
+      modalNextAction = nextAction;
+      modal.classList.add("show");
+    }
+    function closeModal(){ modal.classList.remove("show"); }
+
+    modalClose.addEventListener("click", closeModal);
+    modalHome.addEventListener("click", () => { closeModal(); show("intro"); });
+    modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+    modalNext.addEventListener("click", () => {
+      closeModal();
+      if(typeof modalNextAction === "function") modalNextAction();
+    });
+
+    // =========================
+    // MAZE GAME (only game)
+    // =========================
+    const mazeCanvas = document.getElementById("mazeCanvas");
+    const mctx = mazeCanvas.getContext("2d");
+
+    // 13x13 maze (1=wall, 0=path)
+    const MAZE = [
+      "1111111111111",
+      "1000001000001",
+      "1011101011101",
+      "1010000010001",
+      "1010111110101",
+      "1000100010101",
+      "1110101010101",
+      "1000101010001",
+      "1011101011111",
+      "1010000000001",
+      "1010111111101",
+      "1000000000001",
+      "1111111111111",
+    ];
+
+    const MROWS = MAZE.length;
+    const MCOLS = MAZE[0].length;
+
+    const MTILE = Math.floor(mazeCanvas.width / MCOLS); // 520/13 = 40
+    const OFFSET_Y = Math.floor((mazeCanvas.height - (MROWS * MTILE)) / 2); // center vertically
+
+    let player = { x: 1, y: 1 };
+    const goal = { x: 11, y: 11 };
+
+    function drawMaze(){
+      mctx.clearRect(0,0,mazeCanvas.width,mazeCanvas.height);
+
+      mctx.fillStyle = "#ffffff";
+      mctx.fillRect(0,0,mazeCanvas.width,mazeCanvas.height);
+
+      for(let y=0;y<MROWS;y++){
+        for(let x=0;x<MCOLS;x++){
+          const isWall = (MAZE[y][x] === "1");
+          if(isWall){
+            mctx.fillStyle = "#7cc9e8"; // blue walls like your pic
+            mctx.fillRect(x*MTILE, OFFSET_Y + y*MTILE, MTILE, MTILE);
+          } else {
+            mctx.fillStyle = "#fff";
+            mctx.fillRect(x*MTILE, OFFSET_Y + y*MTILE, MTILE, MTILE);
+          }
+        }
+      }
+
+      // goal square (pink)
+      mctx.fillStyle = "#ff6fa3";
+      mctx.fillRect(goal.x*MTILE, OFFSET_Y + goal.y*MTILE, MTILE, MTILE);
+
+      // player
+      mctx.font = `${Math.floor(MTILE*0.7)}px system-ui, Apple Color Emoji`;
+      mctx.textAlign="center";
+      mctx.textBaseline="middle";
+      mctx.fillText("🧍", player.x*MTILE + MTILE/2, OFFSET_Y + player.y*MTILE + MTILE/2);
+
+      // border
+      mctx.strokeStyle="rgba(0,0,0,.08)";
+      mctx.lineWidth=2;
+      mctx.strokeRect(1,1,mazeCanvas.width-2,mazeCanvas.height-2);
+    }
+
+    function canMove(x,y){
+      if(x<0 || y<0 || x>=MCOLS || y>=MROWS) return false;
+      return MAZE[y][x] === "0";
+    }
+
+    function mazeMove(dx,dy){
+      const nx = player.x + dx;
+      const ny = player.y + dy;
+      if(canMove(nx,ny)){
+        player.x = nx; player.y = ny;
+        drawMaze();
+        mazeCheckWin();
+      }
+    }
+
+    const apologyLetter =
+`Aya,
+
+I’m sorry for everything. I know I messed up in ways that hurt you, and I hate that I made you feel anything less than loved and safe.
+
+I miss you. I miss your voice, your smile, your little habits… I miss my cute girl. I don’t want to fight, and I don’t want distance between us. I just want us.
+
+I’m not asking for perfection. I’m asking for one chance to fix what I broke, step by step, with actions not words. I’ll listen more, I’ll be calmer, and I’ll do better—because you matter to me more than my ego.
+
+All I need is my baby to come back. Please stop acting cold with me. I love you so much, Aya, and I want you with me… for real.
+
+Always,
+Me`;
+
+    function mazeCheckWin(){
+      if(player.x === goal.x && player.y === goal.y){
+        // Step 1: cute message
+        openModal(
+          "You did it 💗",
+          `I love youu ${HER_NAME}… good job!`,
+          "You’re my smart cute girl.",
+          "Read my letter",
+          () => {
+            // Step 2: show the letter
+            openModal(
+              "From me to you",
+              "Please read this, Aya.",
+              "",
+              "Home",
+              () => show("intro"),
+              apologyLetter
+            );
+          }
+        );
+      }
+    }
+
+    function mazeInit(){
+      player = {x:1,y:1};
+      drawMaze();
+    }
+
+    document.getElementById("btnMazeRestart").addEventListener("click", mazeInit);
+
+    // Arrow buttons
+    document.getElementById("up").addEventListener("click", () => mazeMove(0,-1));
+    document.getElementById("down").addEventListener("click", () => mazeMove(0,1));
+    document.getElementById("left").addEventListener("click", () => mazeMove(-1,0));
+    document.getElementById("right").addEventListener("click", () => mazeMove(1,0));
+
+    // Keyboard arrows (only when maze visible)
+    window.addEventListener("keydown",(e)=>{
+      if(screens.maze.classList.contains("hidden")) return;
+      if(e.key === "ArrowUp") mazeMove(0,-1);
+      if(e.key === "ArrowDown") mazeMove(0,1);
+      if(e.key === "ArrowLeft") mazeMove(-1,0);
+      if(e.key === "ArrowRight") mazeMove(1,0);
+    });
+
+    // Start on intro
+    show("intro");
+  </script>
+</body>
+</html>
